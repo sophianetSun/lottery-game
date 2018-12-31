@@ -16,7 +16,7 @@ const HDWalletProvider = require('truffle-hdwallet-provider');
 const MNEMONIC = process.env.MNEMONIC;
 const INFURA_ENDPOINT = process.env.INFURA_ENDPOINT;
 //const MNEMONIC = "candy maple cake sugar pudding cream honey rich smooth crumble sweet treat";
-//const INFURA_ENDPOINT = "https://ropsten.infura.io/v3/b794b3d17b5a4d5daaf742a4dced933d";
+//const INFURA_ENDPOINT = "https://ropsten.infura.io/v3/08ca2d37795c46e78ebbf246eddadc33";
 
 module.exports = {
   networks: {

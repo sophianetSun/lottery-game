@@ -101,19 +101,6 @@ contract("Lottery", accounts => {
         assert.ok(winner);
     });
 
-    it("should withdraw by cancel", async () => {
-        const lottery = await Lottery.deployed();
-
-        const player = web3.eth.accounts[1];
-        await lottery.enter({from: player, value: web3.toWei(0.1, "ether")});
-        const initBalance = web3.eth.getBalance(player);
-
-        await lottery.withdraw({from: player});
-        const afterWithdrawBalance = web3.eth.getBalance(player);
-
-        assert.ok(initBalance < afterWithdrawBalance);
-    });
-
     it("should destroy", async () => {
         const lottery = await Lottery.deployed();
         await lottery.destroy({from: web3.eth.accounts[0]});
