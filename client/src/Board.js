@@ -44,12 +44,19 @@ class Board extends Component {
                 <h2>May the odds be ever in your favor!</h2>
                 <p style={boardStyle}>
                     This contract is managed by {manager && manager.value}.
+                    This contract's address {this.props.drizzle.contracts.Lottery.address}.
                     There are currently {players && players.value.length} people entered,
                     competing to win {this.state.prize} ethers!
                     <br />
                     <br />
                     {winner && winner.value} has won the last lottery.
                 </p>
+
+                <h2>{manager && manager.value === this.props.drizzleState.accounts[0] ?
+                    ('You are Manager'): ('You are Player')
+                }{web3.status === 'failed' ? (
+                    ' , need metamask or dapp browser'
+                ): ('')}</h2>
             </div>
         );
     }

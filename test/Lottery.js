@@ -52,12 +52,13 @@ contract("Lottery", accounts => {
         const initialBalance = web3.eth.getBalance(player);
 
         assert.ok(web3.eth.getBalance(lottery.address) > 0);
-
+        await lottery.setEndTime(0, {from: web3.eth.accounts[0]});
         await lottery.pickWinner({from: web3.eth.accounts[0]});
+
         const winner = await lottery.winner.call();
-        
+
         assert.equal(player, winner);
-        
+        await lottery.withdraw({from: winner});
         const fianlBalance = web3.eth.getBalance(player);
 
         assert.ok(fianlBalance - initialBalance > web3.toWei(0.09, 'ether'));
@@ -83,5 +84,44 @@ contract("Lottery", accounts => {
         assert.equal(accounts[3], player3);
         assert.equal(accounts[4], player4);
         assert.equal(accounts[5], player5);
-    }); 
+    });
+
+    it("should gameEnd require after 10 min", async () => {
+        const lottery = await Lottery.deployed();
+        await lottery.enter({from: web3.eth.accounts[1], value: web3.toWei(0.1, "ether")});
+
+        try {
+            await lottery.pickWinner({from: web3.eth.accounts[0]});
+            assert.fail();
+        } catch (err) {
+            assert.include(err.message, "revert");
+        }
+        await lottery.setEndTime(0, {from: web3.eth.accounts[0]});
+        let winner = await lottery.pickWinner({from: web3.eth.accounts[0]});
+        assert.ok(winner);
+    });
+
+    it("should withdraw by cancel", async () => {
+        const lottery = await Lottery.deployed();
+
+        const player = web3.eth.accounts[1];
+        await lottery.enter({from: player, value: web3.toWei(0.1, "ether")});
+        const initBalance = web3.eth.getBalance(player);
+
+        await lottery.withdraw({from: player});
+        const afterWithdrawBalance = web3.eth.getBalance(player);
+
+        assert.ok(initBalance < afterWithdrawBalance);
+    });
+
+    it("should destroy", async () => {
+        const lottery = await Lottery.deployed();
+        await lottery.destroy({from: web3.eth.accounts[0]});
+
+        try {
+            await lottery.manager.call();
+        } catch (err) {
+            assert.include(err.message, "is not a contract address");
+        }
+    });
 });

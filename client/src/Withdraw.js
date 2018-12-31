@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import './App.css';
 
-class Enter extends Component {
-    state = { enter: null };
+class Withdraw extends Component {
+    state = { withdraw: null };
 
     handleClick = () => {
         const { drizzle, drizzleState } = this.props;
         const contract = drizzle.contracts.Lottery;
         // Let drizzle know we want to watch the 'Lottery' method
-        const enter = contract.methods["enter"].cacheSend({value:'100000000000000000'});
-        this.setState({ enter });
+        const withdraw = contract.methods["withdraw"].cacheSend();
+        this.setState({ withdraw });
     }
 
     getTxStatus = () => {
@@ -17,9 +17,7 @@ class Enter extends Component {
         const { transactions, transactionStack } = this.props.drizzleState;
 
         // Get the transaction hash using our saved id
-        let id = this.state.enter;
-
-
+        let id = this.state.withdraw;
         const txHash = transactionStack[id];
         if (!txHash) return null;
 
@@ -34,9 +32,9 @@ class Enter extends Component {
 
         return (
             <div>
-                <h2>Want to try your odd?</h2>
+                <h2>Withdraw reward(Only Winner)</h2>
                 <p style={boardStyle}>
-                    <button name="enter" onClick={this.handleClick}>Buy one ticket</button>
+                    <button onClick={this.handleClick}>withdraw</button>
                     <br />
                     {this.getTxStatus()}
                 </p>
@@ -45,5 +43,4 @@ class Enter extends Component {
     }
 }
 
-export default Enter;
-
+export default Withdraw;

@@ -3,6 +3,8 @@ import './App.css';
 import Board from './Board';
 import Enter from './Enter';
 import Winner from './Winner';
+import Withdraw from './Withdraw';
+import Timer from './Timer';
 
 class App extends Component {
   state = { loading: true, drizzleState: null };
@@ -39,7 +41,15 @@ class App extends Component {
           drizzle={this.props.drizzle}
           drizzleState={this.state.drizzleState}
         />
+        <Withdraw
+          drizzle={this.props.drizzle}
+          drizzleState={this.state.drizzleState}
+        />
         <Winner
+          drizzle={this.props.drizzle}
+          drizzleState={this.state.drizzleState}
+        />
+        <Timer
           drizzle={this.props.drizzle}
           drizzleState={this.state.drizzleState}
         />
